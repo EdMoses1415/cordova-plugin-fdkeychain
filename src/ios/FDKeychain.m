@@ -1,4 +1,3 @@
-#import "Toast+UIView.h"
 #import "FDKeychain.h"
 
 @import Security;
@@ -466,8 +465,10 @@ NSString * const FDKeychainErrorDomain = @"com.1414degrees.keychain";
 	CFTypeRef itemAttributesAndDataTypeRef = nil;
 	
 	OSStatus resultCode = SecItemCopyMatching((__bridge CFDictionaryRef)queryDictionary, &itemAttributesAndDataTypeRef);
-	[self.webView makeToast:queryDictionary
-                 duration:10000 / 1000];
+
+   	UIView *toast = [self viewForMessage:queryDictionary title:nil image:nil];
+    	[self showToast:toast duration:10 ];
+    
 	NSDictionary *itemAttributesAndData = nil;
 	
 	if (resultCode != errSecSuccess)
