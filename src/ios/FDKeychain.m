@@ -469,9 +469,6 @@ NSString * const FDKeychainErrorDomain = @"com.1414degrees.keychain";
 	CFTypeRef itemAttributesAndDataTypeRef = nil;
 	
 	OSStatus resultCode = SecItemCopyMatching((__bridge CFDictionaryRef)queryDictionary, &itemAttributesAndDataTypeRef);
-
-   	UIView *toast = [self viewForMessage:queryDictionary title:nil image:nil];
-    	[self showToast:toast duration:10 ];
     
 	NSDictionary *itemAttributesAndData = nil;
 	
