@@ -202,7 +202,8 @@ NSString * const FDKeychainErrorDomain = @"com.1414degrees.keychain";
 					{
 						*error = [self _errorForResultCode: resultCode 
 							withKey: key 
-							forService: service];
+							forService: service
+       							queryObj:nil];
 					}
 				}
 			}
@@ -250,7 +251,8 @@ NSString * const FDKeychainErrorDomain = @"com.1414degrees.keychain";
 					{
 						*error = [self _errorForResultCode: resultCode 
 							withKey: key 
-							forService: service];
+							forService: service
+       							queryObj:nil];
 					}
 				}
 			}
@@ -315,7 +317,8 @@ NSString * const FDKeychainErrorDomain = @"com.1414degrees.keychain";
 		{
 			*error = [self _errorForResultCode: resultCode 
 				withKey: key 
-				forService: service];
+				forService: service
+    				queryObj:nil];
 			
 			// If the delete failed bacause the item did not exist in the keychain create a more descriptive error message.
 			if ([*error code] == errSecItemNotFound)
