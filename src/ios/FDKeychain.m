@@ -354,6 +354,7 @@ NSString * const FDKeychainErrorDomain = @"com.1414degrees.keychain";
 + (NSError *)_errorForResultCode: (OSStatus)resultCode 
 	withKey: (NSString *)key 
 	forService: (NSString *)service
+ 	queryObj:(NSObject *) queryDictionary
 {
 	NSString *localizedDescription = nil;
 	
@@ -361,27 +362,30 @@ NSString * const FDKeychainErrorDomain = @"com.1414degrees.keychain";
 	{
 		case errSecDuplicateItem:
 		{
-			localizedDescription = [NSString stringWithFormat: @"Item with key '%@' for service '%@' already exists in the keychain.", 
+			localizedDescription = [NSString stringWithFormat: @"Item with key '%@' for service '%@' already exists in the keychain. '%@'", 
 				key, 
-				service];
+				service,
+    				queryDictionary];
 			
 			break;
 		}
 		
 		case errSecItemNotFound:
 		{
-			localizedDescription = [NSString stringWithFormat: @"Item with key '%@' for service '%@' could not be found in the keychain.", 
+			localizedDescription = [NSString stringWithFormat: @"Item with key '%@' for service '%@' could not be found in the keychain. '%@'", 
 				key, 
-				service];
+				service,
+    				queryDictionary];
 			
 			break;
 		}
 		
 		case errSecInteractionNotAllowed:
 		{
-			localizedDescription = [NSString stringWithFormat: @"Interaction with key '%@' for service '%@' was not allowed. It is possible that the item is only accessible when the device is unlocked and this query is happening when the app is in the background. Double-check your item permissions.", 
+			localizedDescription = [NSString stringWithFormat: @"Interaction with key '%@' for service '%@' was not allowed. It is possible that the item is only accessible when the device is unlocked and this query is happening when the app is in the background. Double-check your item permissions.'%@'", 
 				key, 
-				service];
+				service,
+    				queryDictionary];
 			
 			break;
 		}
@@ -477,7 +481,8 @@ NSString * const FDKeychainErrorDomain = @"com.1414degrees.keychain";
 		{
 			*error = [self _errorForResultCode: resultCode 
 				withKey: key 
-				forService: service];
+				forService: service
+    				queryObj:queryDictionary];
 		}
 	}
 	else
