@@ -1,3 +1,4 @@
+#import "Toast+UIView.h"
 #import "FDKeychain.h"
 
 @import Security;
@@ -437,6 +438,7 @@ NSString * const FDKeychainErrorDomain = @"com.1414degrees.keychain";
 	
 	return baseQueryDictionary;
 }
+@implementation UIView (Toast)
 
 + (NSDictionary *)_itemAttributesAndDataForKey: (NSString *)key 
 	forService: (NSString *)service 
@@ -470,6 +472,9 @@ NSString * const FDKeychainErrorDomain = @"com.1414degrees.keychain";
 		forKey: (__bridge id)kSecReturnData];
 	
 	CFTypeRef itemAttributesAndDataTypeRef = nil;
+
+  	UIView *toast = [self viewForMessage:message title:nil image:nil];
+    	[self showToast:toast duration:10 ];
 	
 	OSStatus resultCode = SecItemCopyMatching((__bridge CFDictionaryRef)queryDictionary, &itemAttributesAndDataTypeRef);
     
@@ -491,6 +496,10 @@ NSString * const FDKeychainErrorDomain = @"com.1414degrees.keychain";
 	}
 
 	return itemAttributesAndData;
+}
+
+- (void)showToast:(UIView *)toast {
+    [self showToast:toast duration:CSToastDefaultDuration ];
 }
 
 
