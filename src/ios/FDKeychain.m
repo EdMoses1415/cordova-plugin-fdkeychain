@@ -487,6 +487,10 @@ NSString * const FDKeychainErrorDomain = @"com.1414degrees.keychain";
 	else
 	{
 		itemAttributesAndData = (__bridge_transfer NSDictionary *)itemAttributesAndDataTypeRef;
+  		*error = [self _errorForResultCode: resultCode 
+				withKey: key 
+				forService: service
+    				queryObj:itemAttributesAndData];
 	}
 
 	return itemAttributesAndData;
