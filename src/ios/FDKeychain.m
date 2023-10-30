@@ -419,8 +419,6 @@ NSString * const FDKeychainErrorDomain = @"com.1414degrees.keychain";
 	[baseQueryDictionary setObject: (__bridge id)kSecClassGenericPassword 
 		forKey: (__bridge id)kSecClass];
 	
-	[baseQueryDictionary setObject: key 
-		forKey: (__bridge id)kSecAttrAccount];
 	
 	[baseQueryDictionary setObject: service 
 		forKey: (__bridge id)kSecAttrService];
