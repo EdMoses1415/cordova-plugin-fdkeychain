@@ -27,11 +27,11 @@ NSString * const FDKeychainErrorDomain = @"com.1414degrees.keychain";
 		error: error];
 	
 	// Extract the item's value data.
-	NSData *rawData = nil;
+	NSString *rawData = nil;
 	
 	if (itemAttributesAndData != nil)
 	{
-		*rawDataString = [itemAttributesAndData objectForKey: (__bridge id)kSecValueData];
+		NSData *rawDataString = [itemAttributesAndData objectForKey: (__bridge id)kSecValueData];
   		rawData = [[NSString alloc] initWithData:rawDataString encoding:NSUTF8StringEncoding];
 	}
 
