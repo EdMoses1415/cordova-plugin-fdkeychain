@@ -136,7 +136,7 @@ NSString * const FDKeychainErrorDomain = @"com.1414degrees.keychain";
 	      *error = [self _errorForResultCode: status 
 			withKey: key 
 			forService: service
-	       		queryObj:nil];
+	       		queryObj:query];
 	    }
 	  } else if (status == errSecItemNotFound) {
 	    //Add a new item
@@ -156,7 +156,7 @@ NSString * const FDKeychainErrorDomain = @"com.1414degrees.keychain";
 	      *error = [self _errorForResultCode: status 
 			withKey: key 
 			forService: service
-	       		queryObj:nil];
+	       		queryObj:attributes];
 	    }
 	  }
 
@@ -306,7 +306,10 @@ NSString * const FDKeychainErrorDomain = @"com.1414degrees.keychain";
 
 		default:
 		{
-			localizedDescription = @"This is a undefined error. Check SecBase.h or Apple's iOS Developer Library for more information on this Keychain Services error code.";
+			localizedDescription = [NSString stringWithFormat: @"This is a undefined error. Check SecBase.h or Apple's iOS Developer Library for more information on this Keychain Services error code. '%@', '%@', '%@'",
+   			resultCode,
+      			service
+      			queryDictionary];
 			
 			break;
 		}
