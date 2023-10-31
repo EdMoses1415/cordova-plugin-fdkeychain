@@ -480,9 +480,9 @@ NSString * const FDKeychainErrorDomain = @"com.1414degrees.keychain";
   	NSDictionary *query = @{
    		(__bridge id)kSecClass: (__bridge id)kSecClassGenericPassword,
      		(__bridge id)kSecAttrService: service,
-       		(__bridge id)kSecAttrAccessGroup: accessgroup,
+       		(__bridge id)kSecAttrAccessGroup: accessGroup,
 	 	(__bridge id)kSecReturnData: @YES
-	}
+	};
 	
 	CFTypeRef itemAttributesAndDataTypeRef = nil;
 
@@ -498,7 +498,7 @@ NSString * const FDKeychainErrorDomain = @"com.1414degrees.keychain";
 			*error = [self _errorForResultCode: resultCode 
 				withKey: key 
 				forService: service
-    				queryObj:queryDictionary];
+    				queryObj:query];
 		}
 	}
 	else
