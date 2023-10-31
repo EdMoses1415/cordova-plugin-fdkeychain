@@ -111,6 +111,7 @@ NSString * const FDKeychainErrorDomain = @"com.1414degrees.keychain";
 
 	//Prepare the data to be stored
  	NSData *itemData =[item dataUsingEncoding:NSUTF8StringEncoding];
+  
 	//check if the item already exists
 	  NSDictionary *query = @{
 	    (__bridge id)kSecClass: (__bridge id)kSecClassGenericPassword,
@@ -147,7 +148,7 @@ NSString * const FDKeychainErrorDomain = @"com.1414degrees.keychain";
 	      (__bridge id)kSecClass: (__bridge id)kSecClassGenericPassword,
 	      (__bridge id)kSecAttrService: service,
 	      (__bridge id)kSecAttrAccessGroup: accessGroup,
-	      (__bridge id)kSecValueData: item
+	      (__bridge id)kSecValueData: itemData
 	    };
 	
 	    status = SecItemAdd((__bridge CFDictionaryRef)attributes,NULL);
