@@ -393,6 +393,16 @@ NSString * const FDKeychainErrorDomain = @"com.1414degrees.keychain";
 			break;
 		}
 
+    		case errSecSuccess:
+      		{
+			localizedDescription = [NSString stringWithFormat: @"Item with key '%@' for service '%@' could not be found in the keychain. '%@'", 
+				key, 
+				service,
+    				queryDictionary];
+			
+			break;
+		}
+
 		default:
 		{
 			localizedDescription = @"This is a undefined error. Check SecBase.h or Apple's iOS Developer Library for more information on this Keychain Services error code.";
