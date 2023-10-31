@@ -496,7 +496,7 @@ NSString * const FDKeychainErrorDomain = @"com.1414degrees.keychain";
 	}
 	else
 	{
-		itemAttributesAndData = itemAttributesAndDataTypeRef;
+		itemAttributesAndData = CFRelease(itemAttributesAndDataTypeRef);
 	}
 
 	return itemAttributesAndData;
