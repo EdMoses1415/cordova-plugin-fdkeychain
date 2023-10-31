@@ -1,5 +1,7 @@
 #import "FDKeychain.h"
 
+@import Foundation;
+
 @import Security;
 
 
@@ -312,7 +314,7 @@ NSString * const FDKeychainErrorDomain = @"com.1414degrees.keychain";
 		{
 			localizedDescription = [NSString stringWithFormat: @"This is a undefined error. Check SecBase.h or Apple's iOS Developer Library for more information on this Keychain Services error code. '%@', '%@', '%@'",
    			resultCode,
-      			service
+      			service,
       			queryDictionary];
 			
 			break;
