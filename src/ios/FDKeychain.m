@@ -108,6 +108,9 @@ NSString * const FDKeychainErrorDomain = @"com.1414degrees.keychain";
 	withAccessibility: (FDKeychainAccessibility)accessibility
 	error: (NSError **)error
 {
+
+	//Prepare the data to be stored
+ 	NSData *itemData =[item dataUsingEncoding:NSUTF8StringEncoding];
 	//check if the item already exists
 	  NSDictionary *query = @{
 	    (__bridge id)kSecClass: (__bridge id)kSecClassGenericPassword,
@@ -123,7 +126,7 @@ NSString * const FDKeychainErrorDomain = @"com.1414degrees.keychain";
 	  if(status == errSecSuccess) {
 	    //Update the existing item
 	    NSDictionary *attributesToUpdate = @{
-	      (__bridge id)kSecValueData: item
+	      (__bridge id)kSecValueData: itemData
 	    };
 	
 	    status = SecItemUpdate((__bridge CFDictionaryRef)query, (__bridge CFDictionaryRef)attributesToUpdate);
@@ -136,7 +139,7 @@ NSString * const FDKeychainErrorDomain = @"com.1414degrees.keychain";
 	      *error = [self _errorForResultCode: status 
 			withKey: key 
 			forService: service
-	       		queryObj:query];
+	       		queryObj: query];
 	    }
 	  } else if (status == errSecItemNotFound) {
 	    //Add a new item
@@ -147,7 +150,7 @@ NSString * const FDKeychainErrorDomain = @"com.1414degrees.keychain";
 	      (__bridge id)kSecValueData: item
 	    };
 	
-	    status =SecItemAdd((__bridge CFDictionaryRef)attributes,NULL);
+	    status = SecItemAdd((__bridge CFDictionaryRef)attributes,NULL);
 	
 	    if (status == errSecSuccess) {
 	      
@@ -156,7 +159,7 @@ NSString * const FDKeychainErrorDomain = @"com.1414degrees.keychain";
 	      *error = [self _errorForResultCode: status 
 			withKey: key 
 			forService: service
-	       		queryObj:attributes];
+	       		queryObj: attributes];
 	    }
 	  }
 
