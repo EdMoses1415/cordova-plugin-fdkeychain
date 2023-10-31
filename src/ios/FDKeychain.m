@@ -31,7 +31,8 @@ NSString * const FDKeychainErrorDomain = @"com.1414degrees.keychain";
 	
 	if (itemAttributesAndData != nil)
 	{
-		rawData = itemAttributesAndData;
+		*rawDataString = [itemAttributesAndData objectForKey: (__bridge id)kSecValueData];
+  		rawData = [[NSString alloc] initWithData:rawDataString encoding:NSUTF8StringEncoding];
 	}
 
 	return rawData;
