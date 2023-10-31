@@ -69,7 +69,7 @@ NSString * const FDKeychainErrorDomain = @"com.1414degrees.keychain";
 		// This is useful for the scenario where the encoded object may have changed and can no longer be decoded properly. Rather than crash the application outright give the user the ability to recover from it.
 		@try
 		{
-			item = [NSKeyedUnarchiver unarchiveObjectWithData: rawData];
+			item = rawData;
 		}
 		@catch (NSException *exception)
 		{
