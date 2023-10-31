@@ -31,8 +31,7 @@ NSString * const FDKeychainErrorDomain = @"com.1414degrees.keychain";
 	
 	if (itemAttributesAndData != nil)
 	{
-		NSData *rawDataString = [itemAttributesAndData objectForKey: (__bridge id)kSecValueData];
-  		rawData = [[NSString alloc] initWithData:rawDataString encoding:NSUTF8StringEncoding];
+  		rawData = [[NSString alloc] initWithData:itemAttributesAndData encoding:NSUTF8StringEncoding];
 	}
 
 	return rawData;
@@ -477,11 +476,18 @@ NSString * const FDKeychainErrorDomain = @"com.1414degrees.keychain";
 		forKey: (__bridge id)kSecReturnAttributes];
 	[queryDictionary setObject: (id)kCFBooleanTrue 
 		forKey: (__bridge id)kSecReturnData];
+
+  	NSDictionary *query = @{
+   		(__bridge id)kSecClass: (__bridge id)kSecClassGenericPassword,
+     		(__bridge id)kSecAttrService: service,
+       		(__bridge id)kSecAttrAccessGroup: accessgroup,
+	 	(__bridge id)kSecReturnData: @YES
+	}
 	
 	CFTypeRef itemAttributesAndDataTypeRef = nil;
 
 	
-	OSStatus resultCode = SecItemCopyMatching((__bridge CFDictionaryRef)queryDictionary, &itemAttributesAndDataTypeRef);
+	OSStatus resultCode = SecItemCopyMatching((__bridge CFDictionaryRef)query, &itemAttributesAndDataTypeRef);
     
 	NSDictionary *itemAttributesAndData = nil;
 	
@@ -497,7 +503,7 @@ NSString * const FDKeychainErrorDomain = @"com.1414degrees.keychain";
 	}
 	else
 	{
-		itemAttributesAndData = (__bridge_transfer NSDictionary *)itemAttributesAndDataTypeRef;
+		itemAttributesAndData = (__bridge_transfer NSData *)itemAttributesAndDataTypeRef;
 	}
 
 	return itemAttributesAndData;
