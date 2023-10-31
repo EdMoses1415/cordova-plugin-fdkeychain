@@ -108,157 +108,58 @@ NSString * const FDKeychainErrorDomain = @"com.1414degrees.keychain";
 	withAccessibility: (FDKeychainAccessibility)accessibility
 	error: (NSError **)error
 {
-	// Raise exception if either the key or the service parameter are empty.
-	if ([key length] == 0)
-	{
-		[NSException raise: NSInvalidArgumentException 
-			format: @"%s key argument cannot be empty", 
-				__PRETTY_FUNCTION__];
-	}
-	else if ([service length] == 0)
-	{
-		[NSException raise: NSInvalidArgumentException 
-			format: @"%s service argument cannot be empty", 
-				__PRETTY_FUNCTION__];
-	}
-	
-	// Assume the save is successful.
+	//check if the item already exists
+	  NSDictionary *query = @{
+	    (__bridge id)kSecClass: (__bridge id)kSecClassGenericPassword,
+	    (__bridge id)kSecAttrService: service,
+	    (__bridge id)kSecAttrAccessGroup: accessGroup
+	  };
+
+  	OSStatus status = SecItemCopyMatching((__bridge CFDictionaryRef)query, NULL);
+
+  	// Assume the save is successful.
 	BOOL saveSuccessful = YES;
+
+	  if(status == errSecSuccess) {
+	    //Update the existing item
+	    NSDictionary *attributesToUpdate = @{
+	      (__bridge id)kSecValueData: item
+	    };
 	
-	// If the item is nil attempt to delete it from the keychain.
-	if (item == nil)
-	{
-		saveSuccessful = [self deleteItemForKey: key 
-			forService: service 
-			error: error];
-	}
-	else
-	{
-		// Load the item from the keychain for the key, service and access group to check if it already exists.
-		NSError *itemFromKeychainError = nil;
-		NSDictionary *itemFromKeychain = [self _itemAttributesAndDataForKey: key 
-			forService: service 
-			inAccessGroup: accessGroup 
-			error: &itemFromKeychainError];
-		
-		// If any error except "Item Not Found" occured when checking if the item existed immediately fail out.
-		if (itemFromKeychain == nil 
-			 && [itemFromKeychainError code] != errSecItemNotFound)
-		{
-			// Return NO because checking if the item existed failed.
-			saveSuccessful = NO;
-			
-			// If an error pointer was passed in update the pointer with an error object describing the problem.
-			if (error != NULL)
-			{
-				*error = itemFromKeychainError;
-			}
-		}
-		// Otherwise, if the keychain did not error out when checking if the item existed proceed with saving the item to the keychain.
-		else
-		{
-			// Archive the item so it can be saved to the keychain.
-			NSData *valueData = [NSKeyedArchiver archivedDataWithRootObject: item];
-			
-			// If the item does not exist add it to the keychain.
-			if (itemFromKeychain == nil)
-			{
-				NSMutableDictionary *attributes = [FDKeychain _baseQueryDictionaryForKey: key 
-					forService: service 
-					inAccessGroup: accessGroup];
-				
-				[attributes setObject: valueData 
-					forKey: (__bridge id)kSecValueData];
-				
-				switch (accessibility)
-				{
-					case FDKeychainAccessibleWhenUnlocked:
-					{
-						[attributes setObject: (__bridge id)kSecAttrAccessibleWhenUnlocked 
-							forKey: (__bridge id)kSecAttrAccessible];
-						
-						break;
-					}
-					
-					case FDKeychainAccessibleAfterFirstUnlock:
-					{
-						[attributes setObject: (__bridge id)kSecAttrAccessibleAfterFirstUnlock 
-							forKey: (__bridge id)kSecAttrAccessible];
-						
-						break;
-					}
-				}
-				
-				OSStatus resultCode = SecItemAdd((__bridge CFDictionaryRef)attributes, NULL);
-				
-				// Check if the save succeeded.
-				if (resultCode != errSecSuccess)
-				{
-					// Return NO because saving the item failed.
-					saveSuccessful = NO;
-					
-					// If an error pointer was passed in update the pointer with an error object describing the problem.
-					if (error != NULL)
-					{
-						*error = [self _errorForResultCode: resultCode 
-							withKey: key 
-							forService: service
-       							queryObj:nil];
-					}
-				}
-			}
-			// If the item does exist update the item in the keychain.
-			else
-			{
-				NSDictionary *queryDictionary = [FDKeychain _baseQueryDictionaryForKey: key 
-					forService: service 
-					inAccessGroup: accessGroup];
-				
-				NSMutableDictionary *attributesToUpdate = [NSMutableDictionary dictionaryWithObjectsAndKeys: 
-					valueData, 
-					(__bridge id)kSecValueData, 
-					nil];
-				
-				switch (accessibility)
-				{
-					case FDKeychainAccessibleWhenUnlocked:
-					{
-						[attributesToUpdate setObject: (__bridge id)kSecAttrAccessibleWhenUnlocked 
-							forKey: (__bridge id)kSecAttrAccessible];
-						
-						break;
-					}
-					
-					case FDKeychainAccessibleAfterFirstUnlock:
-					{
-						[attributesToUpdate setObject: (__bridge id)kSecAttrAccessibleAfterFirstUnlock 
-							forKey: (__bridge id)kSecAttrAccessible];
-						
-						break;
-					}
-				}
-				
-				OSStatus resultCode = SecItemUpdate((__bridge CFDictionaryRef)queryDictionary, (__bridge CFDictionaryRef)attributesToUpdate);
-				
-				// Check if the update succeeded.
-				if (resultCode != errSecSuccess)
-				{
-					// Return NO because updating the item failed.
-					saveSuccessful = NO;
-					
-					// If an error pointer was passed in update the pointer with an error object describing the problem.
-					if (error != NULL)
-					{
-						*error = [self _errorForResultCode: resultCode 
-							withKey: key 
-							forService: service
-       							queryObj:nil];
-					}
-				}
-			}
-		}
-	}
+	    status = SecItemUpdate((__bridge CFDictionaryRef)query, (__bridge CFDictionaryRef)attributesToUpdate);
 	
+	    if (status == errSecSuccess) {
+	      
+	    } else {
+	      saveSuccessful = NO;
+	
+	      *error = [self _errorForResultCode: status 
+			withKey: key 
+			forService: service
+	       		queryObj:nil];
+	    }
+	  } else if (status == errSecItemNotFound) {
+	    //Add a new item
+	    NSDictionary *attributes = @{
+	      (__bridge id)kSecClass: (__bridge id)kSecClassGenericPassword,
+	      (__bridge id)kSecAttrService: service,
+	      (__bridge id)kSecAttrAccessGroup: accessGroup,
+	      (__bridge id)kSecValueData: item
+	    };
+	
+	    status =SecItemAdd((__bridge CFDictionaryRef)attributes,NULL);
+	
+	    if (status == errSecSuccess) {
+	      
+	    } else {
+	      saveSuccessful = NO;
+	      *error = [self _errorForResultCode: status 
+			withKey: key 
+			forService: service
+	       		queryObj:nil];
+	    }
+	  }
+
 	return saveSuccessful;
 }
 
