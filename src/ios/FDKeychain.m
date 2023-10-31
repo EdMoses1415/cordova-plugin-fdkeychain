@@ -31,7 +31,7 @@ NSString * const FDKeychainErrorDomain = @"com.1414degrees.keychain";
 	
 	if (itemAttributesAndData != nil)
 	{
-		rawData = [itemAttributesAndData objectForKey: (__bridge id)kSecValueData];
+		rawData = itemAttributesAndData;
 	}
 
 	return rawData;
@@ -496,11 +496,7 @@ NSString * const FDKeychainErrorDomain = @"com.1414degrees.keychain";
 	}
 	else
 	{
-		itemAttributesAndData = (__bridge_transfer NSDictionary *)itemAttributesAndDataTypeRef;
-  		*error = [self _errorForResultCode: resultCode 
-				withKey: key 
-				forService: service
-    				queryObj:itemAttributesAndData];
+		itemAttributesAndData = itemAttributesAndDataTypeRef;
 	}
 
 	return itemAttributesAndData;
