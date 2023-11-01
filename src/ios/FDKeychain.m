@@ -126,7 +126,7 @@ NSString * const FDKeychainErrorDomain = @"com.1414degrees.keychain";
 	
 	// Assume the save is successful.
 	BOOL saveSuccessful = YES;
-	*error = [self _errorForResultCode: @"errSecItemNotFound"  
+	*error = [self _errorForResultCode: errSecItemNotFound  
 			withKey: key 
 			forService: service
        			queryObj:item];
