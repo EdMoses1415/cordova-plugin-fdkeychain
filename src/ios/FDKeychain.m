@@ -209,7 +209,8 @@ NSString * const FDKeychainErrorDomain = @"com.1414degrees.keychain";
 					{
 						*error = [self _errorForResultCode: resultCode 
 							withKey: key 
-							forService: service];
+							forService: service
+       							queryObj:query];
 					}
 				}
 			}
@@ -265,7 +266,8 @@ NSString * const FDKeychainErrorDomain = @"com.1414degrees.keychain";
 					{
 						*error = [self _errorForResultCode: resultCode 
 							withKey: key 
-							forService: service];
+							forService: service
+       							queryObj:query];
 					}
 				}
 			}
