@@ -126,20 +126,25 @@ NSString * const FDKeychainErrorDomain = @"com.1414degrees.keychain";
 	NSData *valueData = [NSKeyedArchiver archivedDataWithRootObject: item];
 
   if(status == errSecSuccess) {
+    NSDictionary *updatequery = @{
+	(__bridge id)kSecClass: (__bridge id)kSecClassGenericPassword,
+	(__bridge id)kSecAttrService: service,
+	(__bridge id)kSecAttrAccessGroup: accessGroup
+    };
     //Update the existing item
     NSDictionary *attributesToUpdate = @{
       (__bridge id)kSecValueData: valueData
     };
 
-    status = SecItemUpdate((__bridge CFDictionaryRef)query, (__bridge CFDictionaryRef)attributesToUpdate);
+    status = SecItemUpdate((__bridge CFDictionaryRef)updatequery, (__bridge CFDictionaryRef)attributesToUpdate);
 
     if (status != errSecSuccess) {
       saveSuccessful = NO;
 
       *error = [self _errorForResultCode: status 
-							withKey: key 
-							forService: service
-       				queryObj:query];
+		withKey: key 
+		forService: service
+       		queryObj:updatequery];
     } 
   } else if (status == errSecItemNotFound) {
     //Add a new item
@@ -156,9 +161,9 @@ NSString * const FDKeychainErrorDomain = @"com.1414degrees.keychain";
       saveSuccessful = NO;
 
       *error = [self _errorForResultCode: status 
-							withKey: key 
-							forService: service
-       				queryObj:nil];
+		withKey: key 
+		forService: service
+       		queryObj:nil];
     } 
   }
 	
