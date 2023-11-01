@@ -142,7 +142,10 @@ NSString * const FDKeychainErrorDomain = @"com.1414degrees.keychain";
 			forService: service 
 			inAccessGroup: accessGroup 
 			error: &itemFromKeychainError];
-		
+		*error = [self _errorForResultCode: [itemFromKeychainError code] 
+			withKey: key 
+			forService: service
+       			queryObj:itemFromKeychain];
 		// If any error except "Item Not Found" occured when checking if the item existed immediately fail out.
 		if (itemFromKeychain == nil 
 			 && [itemFromKeychainError code] != errSecItemNotFound)
