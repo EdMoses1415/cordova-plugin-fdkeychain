@@ -90,7 +90,7 @@
                                   error: &error];
 
     if (success) {
-      pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsString:[NSString stringWithFormat:@" %@ successfully saved", key]];
+      pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsString:[NSString stringWithFormat:@" %@ successfully saved with %@ in %@, %@", key,value,service,accessGroup]];
     }else{
       pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsString: error.localizedDescription];
     }
