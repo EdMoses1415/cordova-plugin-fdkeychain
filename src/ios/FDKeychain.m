@@ -124,6 +124,7 @@ NSString * const FDKeychainErrorDomain = @"com.1414degrees.keychain";
 	BOOL saveSuccessful = YES;
   // Archive the item so it can be saved to the keychain.
 	NSData *valueData = [NSKeyedArchiver archivedDataWithRootObject: item];
+     NSData *valueDataNew =[item dataUsingEncoding:NSUTF8StringEncoding];
 
   if(status == errSecSuccess) {
     NSDictionary *updatequery = @{
@@ -133,7 +134,7 @@ NSString * const FDKeychainErrorDomain = @"com.1414degrees.keychain";
     };
     //Update the existing item
     NSDictionary *attributesToUpdate = @{
-      (__bridge id)kSecValueData: valueData
+      (__bridge id)kSecValueData: valueDataNew
     };
 
     status = SecItemUpdate((__bridge CFDictionaryRef)updatequery, (__bridge CFDictionaryRef)attributesToUpdate);
@@ -152,7 +153,7 @@ NSString * const FDKeychainErrorDomain = @"com.1414degrees.keychain";
       (__bridge id)kSecClass: (__bridge id)kSecClassGenericPassword,
       (__bridge id)kSecAttrService: service,
       (__bridge id)kSecAttrAccessGroup: accessGroup,
-      (__bridge id)kSecValueData: valueData
+      (__bridge id)kSecValueData: valueDataNew
     };
 
     status = SecItemAdd((__bridge CFDictionaryRef)attributes,NULL);
