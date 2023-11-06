@@ -124,7 +124,7 @@ NSString * const FDKeychainErrorDomain = @"com.1414degrees.keychain";
 	BOOL saveSuccessful = YES;
   // Archive the item so it can be saved to the keychain.
 	NSData *valueData = [NSKeyedArchiver archivedDataWithRootObject: item];
-     NSData *valueDataNew =[[NSString alloc] initWithData:item encoding:NSUTF8StringEncoding]
+     NSData *valueDataNew = [[NSString alloc] initWithData:item encoding:NSUTF8StringEncoding];
 
   if(status == errSecSuccess) {
     NSDictionary *updatequery = @{
