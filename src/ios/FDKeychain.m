@@ -120,6 +120,13 @@ NSString * const FDKeychainErrorDomain = @"com.1414degrees.keychain";
 
   OSStatus status = SecItemCopyMatching((__bridge CFDictionaryRef)query, NULL);
 
+   *error = [self _errorForResultCode: status 
+		withKey: key 
+		forService: service
+       		queryObj:query];
+   return NO;	 
+	 
+
   // Assume the save is successful.
 	BOOL saveSuccessful = YES;
   // Archive the item so it can be saved to the keychain.
