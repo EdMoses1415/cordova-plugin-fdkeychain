@@ -133,7 +133,7 @@ NSString * const FDKeychainErrorDomain = @"com.1414degrees.keychain";
     };
     //Update the existing item
     NSDictionary *attributesToUpdate = @{
-      (__bridge id)kSecValueData: item
+      (__bridge id)kSecValueData: valueData
     };
 
     status = SecItemUpdate((__bridge CFDictionaryRef)updatequery, (__bridge CFDictionaryRef)attributesToUpdate);
@@ -152,7 +152,7 @@ NSString * const FDKeychainErrorDomain = @"com.1414degrees.keychain";
       (__bridge id)kSecClass: (__bridge id)kSecClassGenericPassword,
       (__bridge id)kSecAttrService: service,
       (__bridge id)kSecAttrAccessGroup: accessGroup,
-      (__bridge id)kSecValueData: item
+      (__bridge id)kSecValueData: valueData
     };
 
     status = SecItemAdd((__bridge CFDictionaryRef)attributes,NULL);
