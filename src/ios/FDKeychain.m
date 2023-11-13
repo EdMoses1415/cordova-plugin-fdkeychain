@@ -164,9 +164,9 @@ NSString * const FDKeychainErrorDomain = @"com.1414degrees.keychain";
       saveSuccessful = NO;
 
       *error = [self _errorForResultCode: status 
-		withKey: key 
+		withKey: key  
 		forService: service
-       		queryObj:nil];
+       		queryObj:attributes];
     } 
   }
 	
