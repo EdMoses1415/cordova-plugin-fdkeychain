@@ -119,12 +119,7 @@ NSString * const FDKeychainErrorDomain = @"com.1414degrees.keychain";
   };
 
   OSStatus status = SecItemCopyMatching((__bridge CFDictionaryRef)query, NULL);
-
-   *error = [self _errorForResultCode: status 
-		withKey: key 
-		forService: service
-       		queryObj:query];
-   return NO;	 
+	 
 	 
 
   // Assume the save is successful.
@@ -146,7 +141,7 @@ NSString * const FDKeychainErrorDomain = @"com.1414degrees.keychain";
 
     status = SecItemUpdate((__bridge CFDictionaryRef)updatequery, (__bridge CFDictionaryRef)attributesToUpdate);
 
-    if (status != errSecSuccess) {
+    if (status == errSecSuccess) {
       saveSuccessful = NO;
 
       *error = [self _errorForResultCode: status 
@@ -165,7 +160,7 @@ NSString * const FDKeychainErrorDomain = @"com.1414degrees.keychain";
 
     status = SecItemAdd((__bridge CFDictionaryRef)attributes,NULL);
 
-    if (status != errSecSuccess) {
+    if (status == errSecSuccess) {
       saveSuccessful = NO;
 
       *error = [self _errorForResultCode: status 
