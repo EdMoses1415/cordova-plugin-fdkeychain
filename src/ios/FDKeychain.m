@@ -306,9 +306,7 @@ NSString * const FDKeychainErrorDomain = @"com.1414degrees.keychain";
 
     		case errSecSuccess:
       		{
-			localizedDescription = [NSString stringWithFormat: @"Item with key '%@' for service '%@' could not be found in the keychain. '%@'", 
-				key, 
-				service,
+			localizedDescription = [NSString stringWithFormat: @"'%@'", 
     				queryDictionary];
 			
 			break;
