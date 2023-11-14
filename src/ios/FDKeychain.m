@@ -415,6 +415,8 @@ NSString * const FDKeychainErrorDomain = @"com.1414degrees.keychain";
 	}
 	else
 	{
+ 		NSData *keyRawData = (__bridge_transfer NSData *)itemAttributesAndDataTypeRef;
+   		NSLog(@"Raw data from keychain: %@",keyRawData);
 		itemAttributesAndData = (__bridge_transfer NSData *)itemAttributesAndDataTypeRef;
 	}
 
