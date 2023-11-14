@@ -160,7 +160,7 @@ NSString * const FDKeychainErrorDomain = @"com.1414degrees.keychain";
 
     status = SecItemAdd((__bridge CFDictionaryRef)attributes,NULL);
 
-    if (status != errSecSuccess) {
+    if (status == errSecSuccess) {
       saveSuccessful = NO;
 
       *error = [self _errorForResultCode: status 
