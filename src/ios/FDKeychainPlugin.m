@@ -56,7 +56,7 @@
         if (error != nil) {
             pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsString: error.localizedDescription];
         }else{
-            pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsString:value];
+            pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsArrayBuffer:value];
         }
         
         [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
