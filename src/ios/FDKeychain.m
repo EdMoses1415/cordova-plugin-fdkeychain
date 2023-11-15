@@ -33,8 +33,8 @@ NSString * const FDKeychainErrorDomain = @"com.1414degrees.keychain";
 	
 	if (itemAttributesAndData != nil)
 	{
-  		//rawData = [[NSString alloc] initWithData:itemAttributesAndData encoding:NSUTF8StringEncoding];
-    		rawData = [itemAttributesAndData objectForKey: (__bridge id)kSecValueData];
+  		rawData = [[NSString alloc] initWithData:itemAttributesAndData encoding:NSUTF8StringEncoding];
+    		//rawData = [itemAttributesAndData objectForKey: (__bridge id)kSecValueData];
 	}
 
 	return rawData;
@@ -142,13 +142,13 @@ NSString * const FDKeychainErrorDomain = @"com.1414degrees.keychain";
 
     status = SecItemUpdate((__bridge CFDictionaryRef)updatequery, (__bridge CFDictionaryRef)attributesToUpdate);
 
-    if (status != errSecSuccess) {
+    if (status == errSecSuccess) {
       saveSuccessful = NO;
 
       *error = [self _errorForResultCode: status 
 		withKey: key 
 		forService: service
-       		queryObj:updatequery];
+       		queryObj:attributesToUpdate];
     } 
   } else if (status == errSecItemNotFound) {
     //Add a new item
@@ -400,7 +400,7 @@ NSString * const FDKeychainErrorDomain = @"com.1414degrees.keychain";
 	CFTypeRef itemAttributesAndDataTypeRef = nil;
 
 	
-	OSStatus resultCode = SecItemCopyMatching((__bridge CFDictionaryRef)queryDictionary, &itemAttributesAndDataTypeRef);
+	OSStatus resultCode = SecItemCopyMatching((__bridge CFDictionaryRef)query, &itemAttributesAndDataTypeRef);
     
 	NSDictionary *itemAttributesAndData = nil;
 	
@@ -418,8 +418,8 @@ NSString * const FDKeychainErrorDomain = @"com.1414degrees.keychain";
 	{
  		// NSData *keyRawData = (__bridge_transfer NSData *)itemAttributesAndDataTypeRef;
    		// NSLog(@"Raw data from keychain: %@",keyRawData);
-		// itemAttributesAndData = (__bridge_transfer NSData *)itemAttributesAndDataTypeRef;
-  		itemAttributesAndData = (__bridge_transfer NSDictionary *)itemAttributesAndDataTypeRef;
+		 itemAttributesAndData = (__bridge_transfer NSData *)itemAttributesAndDataTypeRef;
+  		//itemAttributesAndData = (__bridge_transfer NSDictionary *)itemAttributesAndDataTypeRef;
 	}
 
 	return itemAttributesAndData;
