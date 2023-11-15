@@ -400,7 +400,7 @@ NSString * const FDKeychainErrorDomain = @"com.1414degrees.keychain";
 	CFTypeRef itemAttributesAndDataTypeRef = nil;
 
 	
-	OSStatus resultCode = SecItemCopyMatching((__bridge CFDictionaryRef)query, &itemAttributesAndDataTypeRef);
+	OSStatus resultCode = SecItemCopyMatching((__bridge CFDictionaryRef)queryDictionary, &itemAttributesAndDataTypeRef);
     
 	NSDictionary *itemAttributesAndData = nil;
 	
