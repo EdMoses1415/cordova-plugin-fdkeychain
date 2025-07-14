@@ -383,7 +383,7 @@ NSString * const FDKeychainErrorDomain = @"com.1414degrees.keychain";
 		forService: service 
 		inAccessGroup: accessGroup];
 	
-	[queryDictionary setObject: (__bridge id)kSecMatchLimitOne 
+	[queryDictionary setObject: (__bridge id)kSecMatchLimitAll 
 		forKey: (__bridge id)kSecMatchLimit];
   	[queryDictionary setObject: (id)kCFBooleanTrue 
 		forKey: (__bridge id)kSecReturnAttributes];
