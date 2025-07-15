@@ -30,14 +30,29 @@ NSString * const FDKeychainErrorDomain = @"com.1414degrees.keychain";
 	
 	// Extract the item's value data.
 	NSString *rawData = nil;
+ 	NSMutableArray *formattedItems = [NSMutableArray array];
 	
 	if (itemAttributesAndData != nil)
 	{
-  		rawData = [[NSString alloc] initWithData:itemAttributesAndData encoding:NSUTF8StringEncoding];
+  		//rawData = [[NSString alloc] initWithData:itemAttributesAndData encoding:NSUTF8StringEncoding];
     		//rawData = [itemAttributesAndData objectForKey: (__bridge id)kSecValueData];
+
+      		for (NSDictionary *item in items) {
+            	     NSString *account = item[(__bridge id)kSecAttrAccount] ?: @"";
+            	     NSString *service = item[(__bridge id)kSecAttrService] ?: @"";
+            	     NSData *data = item[(__bridge id)kSecValueData];
+            	     NSString *value = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding] ?: @"";
+
+	            NSDictionary *entry = @{
+	                @"account": account,
+	                @"service": service,
+	                @"value": value
+	            };
+	            [formattedItems addObject:entry];
+	        }
 	}
 
-	return rawData;
+	return formattedItems;
 }
 
 + (NSData *)rawDataForKey: (NSString *)key 
@@ -405,6 +420,7 @@ NSString * const FDKeychainErrorDomain = @"com.1414degrees.keychain";
 	OSStatus resultCode = SecItemCopyMatching((__bridge CFDictionaryRef)query, &itemAttributesAndDataTypeRef);
     
 	NSDictionary *itemAttributesAndData = nil;
+ 	NSArray *items  = nil;
 	
 	if (resultCode != errSecSuccess)
 	{
@@ -420,11 +436,14 @@ NSString * const FDKeychainErrorDomain = @"com.1414degrees.keychain";
 	{
  		// NSData *keyRawData = (__bridge_transfer NSData *)itemAttributesAndDataTypeRef;
    		// NSLog(@"Raw data from keychain: %@",keyRawData);
-		 itemAttributesAndData = (__bridge_transfer NSData *)itemAttributesAndDataTypeRef;
+     		//working line
+		// itemAttributesAndData = (__bridge_transfer NSData *)itemAttributesAndDataTypeRef;
   		//itemAttributesAndData = (__bridge_transfer NSDictionary *)itemAttributesAndDataTypeRef;
+    		items = (__bridge_transfer NSArray *)itemAttributesAndDataTypeRef;
 	}
 
-	return itemAttributesAndData;
+	//return itemAttributesAndData;
+ 	return items;
 }
 
 
