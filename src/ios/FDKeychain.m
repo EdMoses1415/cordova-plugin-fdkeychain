@@ -394,8 +394,9 @@ NSString * const FDKeychainErrorDomain = @"com.1414degrees.keychain";
    		(__bridge id)kSecClass: (__bridge id)kSecClassGenericPassword,
      		(__bridge id)kSecAttrService: service,
        		(__bridge id)kSecAttrAccessGroup: accessGroup,
-	 	(__bridge id)kSecReturnData: @YES,
-   		(__bridge id)kSecMatchLimit: (__bridge id)kSecMatchLimitAll
+	 	(__bridge id)kSecMatchLimit: (__bridge id)kSecMatchLimitAll,
+	 	(__bridge id)kSecReturnAttributes: @YES,
+	 	(__bridge id)kSecReturnData: @YES
 	};
 	
 	CFTypeRef itemAttributesAndDataTypeRef = nil;
