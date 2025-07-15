@@ -37,7 +37,7 @@ NSString * const FDKeychainErrorDomain = @"com.1414degrees.keychain";
   		//rawData = [[NSString alloc] initWithData:itemAttributesAndData encoding:NSUTF8StringEncoding];
     		//rawData = [itemAttributesAndData objectForKey: (__bridge id)kSecValueData];
 
-      		for (NSDictionary *item in items) {
+      		for (NSDictionary *item in itemAttributesAndData) {
             	     NSString *account = item[(__bridge id)kSecAttrAccount] ?: @"";
             	     NSString *service = item[(__bridge id)kSecAttrService] ?: @"";
             	     NSData *data = item[(__bridge id)kSecValueData];
